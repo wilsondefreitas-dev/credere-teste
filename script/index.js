@@ -1,65 +1,78 @@
-window.onload = () => {
+(function () {
 
-    writeForm();
+    window.onload = () => {
 
-    setTimeout(() => Inputmask().mask(document.querySelectorAll("input")), 3000);
+        writeForm();
+        activateInputMask();
 
+    };
 
-};
+    const activateInputMask = () => {
 
-const writeForm = () => {
+        setTimeout(() => Inputmask().mask(document.querySelectorAll("input")), 100);
 
-    document.querySelectorAll(".custon_input").forEach(element => {
+    };
 
-        const label = element.getAttribute("label");
+    const checkAge = (dateOfBirth, dependent) => {
 
-        const id = element.getAttribute("id");
-        const type = element.getAttribute("type");
-        const required = (element.getAttribute("required") === "true") || false;
-        const dataInputmask = element.getAttribute("data-inputmask") || "";
+        const age = Math.floor((new Date().getTime() - new Date(dateOfBirth).getTime()) / (365 * 24 * 60 * 60 * 1000));
+        document.querySelector(`#container_${dependent}`).style.display = (age >= 18 && age.toString().length <= 2) ? 'block' : 'none';
 
-        const id2 = element.getAttribute("id2");
-        const type2 = element.getAttribute("type2");
-        const title2 = element.getAttribute("title2");
-        const required2 = (element.getAttribute("required2") === "true") || false;
-        const dataInputmask2 = element.getAttribute("data-inputmask") || "";
+    };
 
-        const addNew = (element.getAttribute("addNew") === "true") || false;
-        const deleteButton = (element.getAttribute("deleteButtton") === "true") || false;
+    const writeForm = () => {
 
-        const multiply = parseInt(element.getAttribute("multiply")) || 1;
+        document.querySelectorAll(".custon_input").forEach(element => {
 
-        element.classList.add = "input_container";
-        element.onkeypress = (event) => onChangeHandle(event);
+            const getAttr = (attr) => element.getAttribute(attr);
 
-        let inputs_str = '';
+            const label = getAttr("label");
 
-        for (let i = 0; i < multiply; i++) {
+            const id = [getAttr("id"), getAttr("id2")],
+                type = [getAttr("type"), getAttr("type2")],
+                title = [getAttr("title2"), getAttr("title2")],
+                required = [(getAttr("required") === "true"), (getAttr("required2") === "true")],
+                dataInputmask = [(getAttr("data-inputmask") || ""), (getAttr("data-inputmask2") || "")];
 
-            inputs_str += `<div class="input_group" style="display: ${i > 0 ? 'none' : 'block'}">
+            const addNew = (getAttr("addNew") === "true"),
+                deleteButton = (getAttr("deleteButtton") === "true"),
+                hide = (getAttr("hide") === "true"),
+                dependent = (getAttr("dependent")?.split(",") || []);
+
+            const multiply = parseInt(getAttr("multiply")) || 1;
+
+            element.classList.add = "input_container";
+            element.onkeyup = element.onchange = (event) => onChangeHandle(event);
+
+            let inputs_str = '';
+            for (let i = 0; i < multiply; i++) {
+
+                inputs_str += `<div class="input_group" style="display: ${i > 0 ? 'none' : 'block'}">
                     
                     <input 
-                        id="${id}" 
-                        type="${type}" 
-                        ${required && 'required'}
-                        data-inputmask="${dataInputmask}"
-                        style="width:${(!id2 && !addNew) ? '100%' : 'auto'}"
+                        id="${id[0]}" 
+                        type="${type[0]}" 
+                        ${required[0] && 'required'}
+                        data-inputmask="${dataInputmask[0]}"
+                        style="width:${(!id[1] && !addNew) ? '100%' : 'auto'}"
+                        dependent="${dependent}"
                     />
 
-                    ${id2 ? `
+                    ${id[1] ? `
 
                         <input 
-                            id="${id2}" 
-                            type="${type2}" 
-                            ${required2 && 'required'}
-                            data-inputmask="${dataInputmask2}"
-                            style="width:${(!id2 && !addNew) ? '100%' : 'auto'}"
+                            id="${id[1]}" 
+                            type="${type[1]}" 
+                            ${required[1] && 'required'}
+                            data-inputmask="${dataInputmask[1]}"
+                            style="width:${(!id[1] && !addNew) ? '100%' : 'auto'}"
+                            dependent="${dependent}"
                         /> 
 
-                        ${title2 ? `
+                        ${title[1] ? `
                             
-                            <label for="${id2}">
-                                ${title2}
+                            <label for="${id[1]}">
+                                ${title[1]}
                             </label>
                         
                         `: ''} 
@@ -76,16 +89,16 @@ const writeForm = () => {
 
                 </div>`;
 
-        }
+            }
 
-        element.innerHTML = `
-            <div class="input_container">
+            element.innerHTML = `
+            <div class="input_container" style="display: ${hide ? "none" : "block"}" id="container_${id[0]}">
 
-                <label for="${id}">
+                <label for="${id[0]}">
                     ${label}
                 </label>
 
-                    ${inputs_str}
+                    ${inputs_str}   
 
                     ${addNew ? `
                             <div class="input_group">
@@ -99,15 +112,28 @@ const writeForm = () => {
 
             </div>`;
 
-    });
+        });
 
 
-}
+    }
 
 
-onChangeHandle = function (event) {
+    onChangeHandle = function (event) {
 
-    console.log(event);
+        const id = event.target.id;
+        const dependent = event.target.getAttribute("dependent");
 
+        switch (id) {
 
-}
+            case "birthday":
+                checkAge(event.target.value, dependent);
+                break;
+
+            default: break;
+
+        }
+
+    }
+
+})();
+
