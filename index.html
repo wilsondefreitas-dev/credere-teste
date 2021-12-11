@@ -6,239 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style/style.css">
     <script src="./script/lib/Inputmask-5.x/dist/inputmask.js"></script>
-    <title>Document</title>
+    <link rel="icon" type="image/x-icon" href="./style/img/favicon.ico">
+    <title>Credere - Formulário</title>
 </head>
-
-<style>
-
-    *{
-
-        box-sizing: border-box;
-
-    }
-
-    body{
-
-        margin: 0;
-
-        background-color: #454c66;
-        background-image: linear-gradient(45deg,#454c66,#49837d);
-        background-attachment: fixed;
-
-        font-family: 'Open Sans', sans-serif;
-        color: white;
-
-    }
-
-    #root_container{
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        width: 100%;
-
-    }
-
-    #header{
-
-        width: 100%;
-        height: 80px;
-        padding: 1rem;
-        
-        background-color: rgba(255, 255, 255, 0.05);
-
-    }
-
-    #footer{
-
-        display:flex;
-        justify-content: center;
-        align-items: center;
-
-        width: 100%;
-        height: 60px;
-        padding: 1rem;
-        
-        background-color: #373737;
-
-    }
-
-    #footer a{
-
-        color: #4ec498;
-        text-decoration: none;
-        font-weight: bold;
-
-    }
-
-    #header img{
-
-        height: 100%;
-
-    }
-
-    #main_column{
-
-        position: relative;
-
-        width: 800px;
-        padding: 1rem 1rem 2rem 1rem;
-
-
-        /* background-color: rgba(255, 255, 255, 0.05); */
-
-    }
-
-    @media screen and (max-width: 800px){
-
-        #main_column{
-
-            width: 100%;
-
-        }
-
-    }
-
-    .main_divider{
-        
-        width: 100%;
-        height: 4px;
-        background-color: #4ec498;
-
-    }
-
-    #main_title{
-
-        margin-top: 0;
-
-    }
-
-
-
-
-
-
-
-
-
-    /* FORM */
-
-    .sub_title{
-
-        margin-bottom: 0;
-        border-bottom: solid 2px rgba(255, 255, 255, 0.05);
-        text-align: center;
-        padding-bottom: 0.8rem;
-
-    }
-
-    .input_container{
-
-        display: flex;
-        flex-direction: column;
-        padding-top: 1rem;
-        font-size: 16px;
-
-    }
-
-    .input_container input{
-
-        margin-top: 0.5rem;
-        font-size: 16px;
-        background-color: rgba(255, 255, 255, 0.08);
-        border: none;
-        border-bottom: 2px solid rgba(69, 76, 102, 0.5);
-        padding: 0.5rem;
-        color: white;
-        border-radius: 1rem;
-
-    }
-
-    .input_container input:hover{
-
-        background-color: rgba(255, 255, 255, 0.1);
-
-    }
-
-    .input_container input:focus{
-        outline: none;
-        color: rgb(192, 192, 192);
-        border-bottom-color: white;
-    }
-
-    ::-webkit-calendar-picker-indicator {
-        filter: invert(1);
-        cursor: pointer;
-    }
-
-    .input_container label{
-
-        font-weight: bold;
-
-    }
-
-    .input_container label span{
-
-        color: orangered;
-        font-weight: 100;
-
-    }
-
-    .input_container .extra_button{
-
-        display: inline;
-        color: rgb(192, 192, 192);
-        cursor: pointer;
-        font-size: 13px
-
-    }
-
-    button[type="submit"]{
-
-        border-radius: 21px;
-        line-height: 42px;
-        padding: 0.25rem;
-        appearance: none;
-        border: none;
-        color: #454c66;
-        background-color: #4ec498;
-        cursor: pointer;
-        font: 700 14px/28px Montserrat,Arial,"Helvetica Neue",Helvetica,sans-serif;
-        vertical-align: middle;
-        text-transform: uppercase;
-    }
-
-    input[type="date"]{
-        padding: 0.35rem;
-    }
-
-    input[type="checkbox"]{
-        cursor: pointer;
-    }
-
-    ::placeholder {
-        color: rgb(192, 192, 192);
-    }   
-
-    .chk input {
-    display: none;
-}
-
-.chk span {
-    width: 12px;
-    height: 12px;
-    display: block;
-    background-color: #fff;
-    border: 1px solid #DDD;
-}
-
-.chk input:checked + span {
-    background-color: #c03;
-}
-
-
-</style>
 
 <body>
     
@@ -252,128 +22,136 @@
 
         <div id="main_column">
 
-            <h1 id="main_title">Registro de Cliente</h1>
+            <h1 id="main_title">
+                Registro de Cliente
+            </h1>
 
             <div class="main_divider"></div>
 
-            <form>
+            <form id="form">
 
-                <h2 class="sub_title">Dados</h2>
+                <h2 class="sub_title">
+                    Dados
+                </h2>
                 <div class="sub_divider"></div>
 
-                <div class="input_container">
 
-                    <label for="name" title="Inserir nome completo do cliente">Nome<span>*</span></label>
-                    <input type="text" name="name" id="name" required>
+                <div 
+                    class="custon_input" 
+                    label="Nome<span>*</span>"
 
-                </div>
+                    id="name"
+                    type="text"
+                    required="true"
+                ></div>
 
-                <div class="input_container">
+                <div 
+                    class="custon_input" 
+                    label="Data de Nascimento<span>*</span>"
 
-                    <label for="birthday" title="Inserir a data de nascimento do cliente">Data de Nascimento<span>*</span></label>
-                    <input type="date" name="birthday" id="birthday" required>
+                    id="birthday"
+                    type="date"
+                    required="true"
+                ></div>
 
-                </div>
+                <div 
+                    class="custon_input" 
+                    label="Carteira de Motorista<span>*</span> <i>/ Número e data de emissão</i>"
+                    
+                    id="driver_license"
+                    type="text"
+                    required="true"
+                    data-inputmask="'mask': '999999999'"
 
-                <div class="input_container">
+                    id2="issued_at"
+                    type2="date"
+                    required2="true"
+                ></div>
 
-                    <label for="driver_license" title="Inserir número e data de vencimento da carteira de motorista do cliente">Carteira de Motorista<span>*</span></label>
-                    <div class="input_group">
-                        <input type="text" name="driver_license" id="driver_license" data-inputmask="'mask': '999999999'" required>
-                        <input type="date" name="issued_at" id="issued_at" required>
-                    </div>
+                <div 
+                    class="custon_input" 
+                    label="Estado<span>*</span>"
 
-                </div>
+                    id="state"
+                    type="text"
+                    required="true"
+                ></div>
 
-                <div class="input_container">
+                <div 
+                    class="custon_input" 
+                    label="Cidade<span>*</span>"
 
-                    <label for="state" title="Inserir estado qual o cliente reside">Estado<span>*</span></label>
-                    <input type="text" name="state" id="state" required>
-
-                </div>
-
-                <div class="input_container">
-
-                    <label for="city" title="Inserir cidade qual o cliente reside">Cidade<span>*</span></label>
-                    <input type="text" name="city" id="city" required>
-
-                </div>
-
-
-
-                
+                    id="city"
+                    type="text"
+                    required="true"
+                ></div>
 
                 <h2 class="sub_title">Contato</h2>
 
-                <div class="input_container">
+                <div 
+                    class="custon_input" 
+                    label="Telefones<span>*</span>"
 
-                    <label for="phone" title="Inserir cidade qual o cliente reside">Telefones<span>*</span></label>
-                    
-                    <div class="input_group">
-                        <input type="text" name="phone" id="phone" data-inputmask="'mask': '(99) 99999-9999'" required>
-                        <input type="checkbox" name="main1" id="main1">
-                        <label for="main1" title="Marcar como o telefone princípal do cliente">Principal</label>
-                        <div class="extra_button">| <u>Excluir</u></div>
-                    </div>
+                    id="phone1"
+                    type="text"
+                    required="true"
+                    data-inputmask="'mask': '(99) 99999-9999'"
 
-                    <div class="input_group">
-                        <input type="text" name="phone" id="phone" data-inputmask="'mask': '(99) 99999-9999'" required>
-                        <input type="checkbox" name="main1" id="main1">
-                        <label for="main1" title="Marcar como o telefone princípal do cliente">Principal</label>
-                        <div class="extra_button">| <u>Excluir</u></div>
-                    </div>
+                    id2="main1"
+                    type2="checkbox"
+                    title2="Principal"
 
-                    <div class="input_group">
-                        <u class="extra_button" type="button" name="add" id="add">Adicionar Novo Telefone</u>
-                    </div>
+                    deleteButtton="true"
+                    addNew="true"
 
-                </div>
-
-                <div class="input_container">
-
-                    <label for="email" title="Inserir e-mail do cliente">E-mails<span>*</span></label>
-
-                    <div class="input_group">
-
-                        <input type="email" name="email" id="email" required>
-                        <div class="extra_button">| <u>Excluir</u></div>
-
-                    </div>
+                    multiply="4"
+                ></div>
 
 
-                    <div class="input_group">
-                        <u class="extra_button" type="button" name="add" id="add">Adicionar Novo E-mail</u>
-                    </div>
+                <div 
+                    class="custon_input" 
+                    label="E-mails<span>*</span>"
 
-                </div>
+                    id="email"
+                    type="text"
+                    required="true"
 
+                    deleteButtton="true"
+                    addNew="true"
 
+                    multiply="4"
+                ></div>
 
+                <h2 class="sub_title">
+                    Responsável
+                </h2>
 
+                <div 
+                    class="custon_input" 
+                    label="Nome<span>*</span>"
 
+                    id="responsible_name"
+                    type="text"
+                    required="true"
+                ></div>
 
-                <h2 class="sub_title">Responsável</h2>
+                <div 
+                    class="custon_input" 
+                    label="Telefone<span>*</span>"
 
-            
-                <div class="input_container">
-
-                    <label for="name" title="Inserir nome do responsável do cliente">Nome<span>*</span></label>
-                    <input type="text" name="name" id="name" required>
-                    
-                </div>
-
-                <div class="input_container">
-
-                    <label for="phone" title="Inserir cidade qual o cliente reside">Telefone<span>*</span></label>
-                    <input type="text" name="phone" id="phone" data-inputmask="'mask': '(99) 99999-9999'" required>
-
-                </div>
+                    id="responsible_phone"
+                    type="text"
+                    required="true"
+                    data-inputmask="'mask': '(99) 99999-9999'"
+                ></div>
 
                 <h2 class="sub_title"></h2>
 
                 <div class="input_container">
 
-                    <button type="submit">Salvar Cliente</button>
+                    <button type="submit">
+                        Salvar Cliente
+                    </button>
 
                 </div>
     
@@ -383,24 +161,16 @@
 
         <div id="footer">
 
-            <span>/by.<a href="https://github.com/wilsondefreitas-dev" target="_blank">wilsondef</b></a></span>
+            <span>
+                /by.<a href="https://github.com/wilsondefreitas-dev" target="_blank">wilsondef</a>
+            </span>
 
         </div>
 
     </div>
 
     
-    <script src="index.js"></script>
+    <script src="./script/index.js"></script>
 
-    <script>
-
-        window.onload = () => {
-
-            Inputmask().mask(document.querySelectorAll("input"));
-
-        };
-        
-    </script>
-    
 </body>
 </html>
