@@ -1,5 +1,47 @@
 (function () {
 
+    const inputConfig = {
+
+        counter: {
+
+            email: 0,
+            phone: 0
+
+        }
+
+    };
+
+    const brazil_states = [
+        'Selecionar...',
+        'AC - Acre',
+        'AL - Alagoas',
+        'AP - Amapá',
+        'AM - Amazonas',
+        'BA - Bahia',
+        'CE - Ceará',
+        'DF - Distrito Federal',
+        'ES - Espírito Santo',
+        'GO - Goías',
+        'MA - Maranhão',
+        'MT - Mato Grosso',
+        'MS - Mato Grosso do Sul',
+        'MG - Minas Gerais',
+        'PA - Pará',
+        'PB - Paraíba',
+        'PR - Paraná',
+        'PE - Pernambuco',
+        'PI - Piauí',
+        'RJ - Rio de Janeiro',
+        'RN - Rio Grande do Norte',
+        'RS - Rio Grande do Sul',
+        'RO - Rondônia',
+        'RR - Roraíma',
+        'SC - Santa Catarina',
+        'SP - São Paulo',
+        'SE - Sergipe',
+        'TO - Tocantins'
+    ];
+
     window.onload = () => {
 
         writeForm();
@@ -13,12 +55,21 @@
 
     };
 
-    const checkAge = (dateOfBirth, dependent) => {
+    const ageIsMoreThan18 = (dateOfBirth) => {
 
         const age = Math.floor((new Date().getTime() - new Date(dateOfBirth).getTime()) / (365 * 24 * 60 * 60 * 1000));
-        document.querySelector(`#container_${dependent}`).style.display = (age >= 18 && age.toString().length <= 2) ? 'block' : 'none';
+        return (age >= 18 && age.toString().length <= 2);
 
     };
+
+    const checkStateAndDriverLicense = () => {
+
+        const selectedState = document.querySelector('#input_state').value || '';
+        const firstNumDriverLicense = document.querySelector('#input_driver_license').value[0] || '';
+
+        return ((selectedState === 'RN - Rio Grande do Norte') && (firstNumDriverLicense === '6'));
+
+    }
 
     const writeForm = () => {
 
@@ -42,21 +93,29 @@
             const multiply = parseInt(getAttr("multiply")) || 1;
 
             element.classList.add = "input_container";
-            element.onkeyup = element.onchange = (event) => onChangeHandle(event);
 
             let inputs_str = '';
             for (let i = 0; i < multiply; i++) {
 
-                inputs_str += `<div class="input_group" style="display: ${i > 0 ? 'none' : 'block'}">
-                    
-                    <input 
-                        id="${id[0]}" 
-                        type="${type[0]}" 
-                        ${required[0] && 'required'}
-                        data-inputmask="${dataInputmask[0]}"
-                        style="width:${(!id[1] && !addNew) ? '100%' : 'auto'}"
-                        dependent="${dependent}"
-                    />
+                const isNotTheFirst = (i > 0);
+
+                inputs_str += `<div class="input_group" style="display: ${i > 0 ? 'none' : 'block'}" id="group_${id[0] + ((isNotTheFirst) ? i : '')}">
+
+                    ${(id[0] === 'state') ? `
+
+                        <select id="input_${id[0] + ((isNotTheFirst) ? i : '')}">
+                            ${brazil_states.map(state => `<option value="${state}">${state}</option>`)}
+                        </select>` :
+
+                        `<input 
+                            id="input_${id[0] + ((isNotTheFirst) ? i : '')}" 
+                            type="${type[0]}" 
+                            ${required[0] && 'required'}
+                            data-inputmask="${dataInputmask[0]}"
+                            style="width:${(!id[1] && !addNew) ? '100%' : 'auto'}"
+                        />
+                            
+                    `}
 
                     ${id[1] ? `
 
@@ -66,7 +125,6 @@
                             ${required[1] && 'required'}
                             data-inputmask="${dataInputmask[1]}"
                             style="width:${(!id[1] && !addNew) ? '100%' : 'auto'}"
-                            dependent="${dependent}"
                         /> 
 
                         ${title[1] ? `
@@ -81,8 +139,8 @@
 
                     ${deleteButton ? `
 
-                        <div class="extra_button">
-                            | <u>Excluir</u>
+                        <div class="extra_button removeInput">
+                            | Excluir
                         </div>
                         
                     ` : ''}
@@ -102,7 +160,7 @@
 
                     ${addNew ? `
                             <div class="input_group">
-                                <u class="extra_button" type="button" name="add" id="add">
+                                <u class="extra_button addButton" id="add">
                                     Adicionar Novo
                                 </u>
                             </div>
@@ -111,6 +169,51 @@
                 </div>
 
             </div>`;
+
+
+            setTimeout(() => {
+
+                document.querySelectorAll('.removeInput').forEach(element => {
+
+                    element.onclick = (e) => {
+
+                        const parent = e.target.parentNode;
+
+                        parent.style.display = 'none';
+
+                        console.log(parent);
+
+                        document.querySelector('.addButton').style.display = 'block';
+
+                        // / / / / / TODO: MELHORAR O SISTEMA DE ADICIONAR E EXCLUIR OS NOVOS INPUTS
+
+                    }
+
+                });
+
+                document.querySelectorAll('.addButton').forEach(element => {
+
+                    element.onclick = (e) => {
+
+                        const parent = e.target.parentNode.parentNode;
+                        const dataName = parent.id.split('_')[1];
+
+                        inputConfig.counter[dataName] += 1;
+
+                        const element = document.querySelector(`#group_${dataName}${inputConfig.counter[dataName]}`);
+                        const nextElement = document.querySelector(`#group_${dataName}${inputConfig.counter[dataName] + 1}`);
+
+                        element.style.display = 'block';
+                        if (!nextElement) e.target.style.display = 'none';
+
+                    }
+
+                });
+
+            }, 100);
+
+
+            element.onkeyup = element.onchange = (event) => onChangeHandle(event);
 
         });
 
@@ -121,12 +224,27 @@
     onChangeHandle = function (event) {
 
         const id = event.target.id;
-        const dependent = event.target.getAttribute("dependent");
 
         switch (id) {
 
-            case "birthday":
-                checkAge(event.target.value, dependent);
+            case "input_birthday":
+
+                if (event.target.value.length === 10) {
+
+                    document.querySelector(`#container_driver_license`).style.display = ageIsMoreThan18(event.target.value) ? 'block' : 'none';
+
+                    document.querySelector(`#container_responsible_name`).style.display = !ageIsMoreThan18(event.target.value) ? 'block' : 'none';
+                    document.querySelector(`#container_responsible_phone`).style.display = !ageIsMoreThan18(event.target.value) ? 'block' : 'none';
+
+                }
+
+                break;
+
+            case "input_state":
+            case "input_driver_license":
+
+                document.querySelector(`#container_city`).style.display = checkStateAndDriverLicense() ? 'block' : 'none';
+
                 break;
 
             default: break;

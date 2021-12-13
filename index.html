@@ -50,8 +50,6 @@
                     id="birthday"
                     type="date"
                     required="true"
-
-                    dependent="driver_license"
                 ></div>
 
                 <div 
@@ -75,7 +73,7 @@
                     label="Estado<span>*</span>"
 
                     id="state"
-                    type="text"
+                    type="select"
                     required="true"
                 ></div>
 
@@ -86,6 +84,8 @@
                     id="city"
                     type="text"
                     required="true"
+
+                    hide="true"
                 ></div>
 
                 <h2 class="sub_title">
@@ -96,7 +96,7 @@
                     class="custon_input" 
                     label="Telefones<span>*</span>"
 
-                    id="phone1"
+                    id="phone"
                     type="text"
                     required="true"
                     data-inputmask="'mask': '(99) 99999-9999'"
@@ -122,30 +122,30 @@
                     deleteButtton="true"
                     addNew="true"
 
-                    multiply="4"
+                    multiply="3"
                 ></div>
-
-                <h2 class="sub_title">
-                    Responsável
-                </h2>
 
                 <div 
                     class="custon_input" 
-                    label="Nome<span>*</span>"
+                    label="Nome do Responsavel<span>*</span>"
 
                     id="responsible_name"
                     type="text"
                     required="true"
+
+                    hide="true"
                 ></div>
 
                 <div 
                     class="custon_input" 
-                    label="Telefone<span>*</span>"
+                    label="Telefone do Responsavel<span>*</span>"
 
                     id="responsible_phone"
                     type="text"
                     required="true"
                     data-inputmask="'mask': '(99) 99999-9999'"
+
+                    hide="true"
                 ></div>
 
                 <h2 class="sub_title"></h2>
