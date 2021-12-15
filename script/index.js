@@ -1,50 +1,9 @@
-(function () {
-
-    const inputConfig = {
-
-        counter: {
-
-            email: 0,
-            phone: 0
-
-        }
-
-    };
-
-    const brazil_states = [
-        'Selecionar...',
-        'AC - Acre',
-        'AL - Alagoas',
-        'AP - Amapá',
-        'AM - Amazonas',
-        'BA - Bahia',
-        'CE - Ceará',
-        'DF - Distrito Federal',
-        'ES - Espírito Santo',
-        'GO - Goías',
-        'MA - Maranhão',
-        'MT - Mato Grosso',
-        'MS - Mato Grosso do Sul',
-        'MG - Minas Gerais',
-        'PA - Pará',
-        'PB - Paraíba',
-        'PR - Paraná',
-        'PE - Pernambuco',
-        'PI - Piauí',
-        'RJ - Rio de Janeiro',
-        'RN - Rio Grande do Norte',
-        'RS - Rio Grande do Sul',
-        'RO - Rondônia',
-        'RR - Roraíma',
-        'SC - Santa Catarina',
-        'SP - São Paulo',
-        'SE - Sergipe',
-        'TO - Tocantins'
-    ];
+(() => {
 
     window.onload = () => {
 
         writeForm();
+        addEventsOnAddAndRemoveInputButtons();
         activateInputMask();
 
     };
@@ -54,6 +13,45 @@
         setTimeout(() => Inputmask().mask(document.querySelectorAll("input")), 100);
 
     };
+
+    const onChangeHandle = (event) => {
+
+        const id = event.target.id;
+
+        switch (id) {
+
+            case "input_birthday":
+
+                const dateIsComplete = (event.target.value.length === 10);
+
+                if (dateIsComplete) {
+
+                    const license = document.querySelector("#input_license");
+                    const responsible_name = document.querySelector("#input_responsible_name");
+                    const responsible_phone = document.querySelector("#input_responsible_phone");
+
+                    license.style.display = ageIsMoreThan18(event.target.value) ? 'block' : 'none';
+
+                    responsible_name.style.display = !ageIsMoreThan18(event.target.value) ? 'block' : 'none';
+                    responsible_phone.style.display = !ageIsMoreThan18(event.target.value) ? 'block' : 'none';
+
+                }
+
+                break;
+
+            case "input_state":
+            case "input_driver_license":
+
+                const city = document.querySelector(`#container_city`);
+                city.style.display = checkStateAndDriverLicense() ? 'block' : 'none';
+
+                break;
+
+            default: break;
+
+        }
+
+    }
 
     const ageIsMoreThan18 = (dateOfBirth) => {
 
@@ -71,6 +69,67 @@
 
     }
 
+    const addInput = (e) => {
+
+        const parent = e.target.parentNode.parentNode;
+        const dataName = parent.id.split('_')[1];
+
+        Array.from(document.querySelectorAll(`.${dataName}`)).some(input => {
+
+            if (input.style.display === 'none') {
+
+                input.style.display = 'block';
+                return true;
+
+            }
+
+        });
+
+        const isAllBlock = function () {
+
+            let buttonElements = Array.from(document.querySelectorAll(`.${dataName}`));
+            return buttonElements.every(input => !(input.style.display === 'none'));
+
+        }
+
+        if (isAllBlock()) e.target.style.display = 'none';
+
+    }
+
+    const removeInput = (e) => {
+
+        const parent = e.target.parentNode;
+        const dataName = e.target.id.split('_')[1];
+
+        if (dataName === "phone") {
+
+            const radioElement = parent.getElementsByClassName('radio_main')[0];
+            const firstRadio = document.querySelector('#main');
+
+            if (radioElement.checked) {
+
+                radioElement.checked = false;
+                firstRadio.checked = true;
+
+            }
+
+        }
+
+        parent.style.display = 'none';
+        document.getElementsByClassName(`addButton ${dataName}`)[0].style.display = 'block';
+
+    }
+
+    const addEventsOnAddAndRemoveInputButtons = () => {
+
+        const removeInputButtons = document.querySelectorAll('.removeInput');
+        const addInputButtons = document.querySelectorAll('.addButton');
+
+        removeInputButtons.forEach(button => button.onclick = removeInput);
+        addInputButtons.forEach(button => button.onclick = addInput);
+
+    }
+
     const writeForm = () => {
 
         document.querySelectorAll(".custon_input").forEach(element => {
@@ -83,12 +142,12 @@
                 type = [getAttr("type"), getAttr("type2")],
                 title = [getAttr("title2"), getAttr("title2")],
                 required = [(getAttr("required") === "true"), (getAttr("required2") === "true")],
-                dataInputmask = [(getAttr("data-inputmask") || ""), (getAttr("data-inputmask2") || "")];
+                dataInputmask = [(getAttr("data-inputmask") || ""), (getAttr("data-inputmask2") || "")],
+                options = [getAttr("options")?.split(","), getAttr("options2")?.split(",")];
 
             const addNew = (getAttr("addNew") === "true"),
                 deleteButton = (getAttr("deleteButtton") === "true"),
-                hide = (getAttr("hide") === "true"),
-                dependent = (getAttr("dependent")?.split(",") || []);
+                hide = (getAttr("hide") === "true");
 
             const multiply = parseInt(getAttr("multiply")) || 1;
 
@@ -99,12 +158,12 @@
 
                 const isNotTheFirst = (i > 0);
 
-                inputs_str += `<div class="input_group" style="display: ${i > 0 ? 'none' : 'block'}" id="group_${id[0] + ((isNotTheFirst) ? i : '')}">
+                inputs_str += `<div class="input_group ${id[0]}" style="display: ${i > 0 ? 'none' : 'block'}">
 
-                    ${(id[0] === 'state') ? `
+                    ${(type[0] === 'select') ? `
 
                         <select id="input_${id[0] + ((isNotTheFirst) ? i : '')}">
-                            ${brazil_states.map(state => `<option value="${state}">${state}</option>`)}
+                            ${options[0].map(state => `<option value="${state}">${state}</option>`)}
                         </select>` :
 
                         `<input 
@@ -120,16 +179,19 @@
                     ${id[1] ? `
 
                         <input 
-                            id="${id[1]}" 
+                            id="${id[1] + ((isNotTheFirst) ? i : '')}" 
+                            name="radio_${id[1]}"
                             type="${type[1]}" 
                             ${required[1] && 'required'}
                             data-inputmask="${dataInputmask[1]}"
                             style="width:${(!id[1] && !addNew) ? '100%' : 'auto'}"
+                            class="radio_main"
+                            ${(!isNotTheFirst) && 'checked'}
                         /> 
 
                         ${title[1] ? `
                             
-                            <label for="${id[1]}">
+                            <label for="${id[1] + ((isNotTheFirst) ? i : '')}" class="${id[1] + ((isNotTheFirst) ? i : '')}">
                                 ${title[1]}
                             </label>
                         
@@ -137,9 +199,9 @@
                         
                     ` : ''}
 
-                    ${deleteButton ? `
+                    ${(deleteButton && isNotTheFirst) ? `
 
-                        <div class="extra_button removeInput">
+                        <div id="remove_${id[0]}" class="extra_button removeInput">
                             | Excluir
                         </div>
                         
@@ -156,102 +218,22 @@
                     ${label}
                 </label>
 
-                    ${inputs_str}   
+                ${inputs_str}   
 
-                    ${addNew ? `
-                            <div class="input_group">
-                                <u class="extra_button addButton" id="add">
-                                    Adicionar Novo
-                                </u>
-                            </div>
-                        ` : ''}
-
-                </div>
+                ${addNew ? `
+                        <div class="input_group">
+                            <u class="extra_button addButton ${id[0]}" id="add">
+                                Adicionar Novo
+                            </u >
+                        </div >
+                ` : ''}
 
             </div>`;
-
-
-            setTimeout(() => {
-
-                document.querySelectorAll('.removeInput').forEach(element => {
-
-                    element.onclick = (e) => {
-
-                        const parent = e.target.parentNode;
-
-                        parent.style.display = 'none';
-
-                        console.log(parent);
-
-                        document.querySelector('.addButton').style.display = 'block';
-
-                        // / / / / / TODO: MELHORAR O SISTEMA DE ADICIONAR E EXCLUIR OS NOVOS INPUTS
-
-                    }
-
-                });
-
-                document.querySelectorAll('.addButton').forEach(element => {
-
-                    element.onclick = (e) => {
-
-                        const parent = e.target.parentNode.parentNode;
-                        const dataName = parent.id.split('_')[1];
-
-                        inputConfig.counter[dataName] += 1;
-
-                        const element = document.querySelector(`#group_${dataName}${inputConfig.counter[dataName]}`);
-                        const nextElement = document.querySelector(`#group_${dataName}${inputConfig.counter[dataName] + 1}`);
-
-                        element.style.display = 'block';
-                        if (!nextElement) e.target.style.display = 'none';
-
-                    }
-
-                });
-
-            }, 100);
-
 
             element.onkeyup = element.onchange = (event) => onChangeHandle(event);
 
         });
 
-
-    }
-
-
-    onChangeHandle = function (event) {
-
-        const id = event.target.id;
-
-        switch (id) {
-
-            case "input_birthday":
-
-                if (event.target.value.length === 10) {
-
-                    document.querySelector(`#container_driver_license`).style.display = ageIsMoreThan18(event.target.value) ? 'block' : 'none';
-
-                    document.querySelector(`#container_responsible_name`).style.display = !ageIsMoreThan18(event.target.value) ? 'block' : 'none';
-                    document.querySelector(`#container_responsible_phone`).style.display = !ageIsMoreThan18(event.target.value) ? 'block' : 'none';
-
-                }
-
-                break;
-
-            case "input_state":
-            case "input_driver_license":
-
-                document.querySelector(`#container_city`).style.display = checkStateAndDriverLicense() ? 'block' : 'none';
-
-                break;
-
-            default: break;
-
-        }
-
     }
 
 })();
-
