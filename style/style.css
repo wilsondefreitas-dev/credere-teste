@@ -1,0 +1,179 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+
+  background-color: #454c66;
+  background-image: linear-gradient(45deg, #454c66, #49837d);
+  background-attachment: fixed;
+
+  font-family: "Open Sans", sans-serif;
+  color: white;
+}
+
+#root_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  height: 100vh;
+}
+
+#header {
+  width: 100%;
+  height: 80px;
+  padding: 1rem;
+
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+#footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 60px;
+  padding: 1rem;
+
+  background-color: #373737;
+}
+
+#footer a {
+  color: #4ec498;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#header img {
+  height: 100%;
+}
+
+#main_column {
+  position: relative;
+
+  width: 800px;
+  padding: 1rem 1rem 2rem 1rem;
+
+  min-width: 440px;
+}
+
+@media screen and (max-width: 800px) {
+  #main_column {
+    width: 100%;
+  }
+}
+
+.main_divider {
+  width: 100%;
+  height: 4px;
+  background-color: #4ec498;
+}
+
+#main_title {
+  margin-top: 0;
+}
+
+/* FORM */
+
+.sub_title {
+  margin-bottom: 0;
+  border-bottom: solid 2px rgba(255, 255, 255, 0.05);
+  text-align: center;
+  padding-bottom: 0.8rem;
+}
+
+.input_container {
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+  font-size: 16px;
+  overflow: hidden;
+}
+
+.input_container :is(input, select) {
+  margin-top: 0.5rem;
+  font-size: 16px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: none;
+  border-bottom: 2px solid rgba(69, 76, 102, 0.5);
+  padding: 0.5rem;
+  color: white;
+  border-radius: 1rem;
+  flex: auto;
+}
+
+.input_container input[type="checkbox"] {
+  width: auto !important;
+}
+
+.input_container input:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.input_container input:focus,
+.input_container select:focus {
+  outline: none;
+  color: rgb(192, 192, 192);
+  border-bottom-color: white;
+}
+
+.input_container select option {
+  color: #333;
+}
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.input_container label {
+  font-weight: bold;
+}
+
+.input_container i {
+  font-weight: lighter;
+  font-size: 14px;
+}
+
+.input_container label span {
+  color: orangered;
+  font-weight: 100;
+}
+
+.input_container .extra_button {
+  display: inline;
+  color: rgb(192, 192, 192);
+  cursor: pointer;
+  font-size: 15px;
+}
+
+#submitButton {
+  border-radius: 21px;
+  line-height: 42px;
+  padding: 0.25rem;
+  appearance: none;
+  border: none;
+  color: #454c66;
+  background-color: #4ec498;
+  cursor: pointer;
+  font: 700 14px/28px Montserrat, Arial, "Helvetica Neue", Helvetica, sans-serif;
+  vertical-align: middle;
+  text-transform: uppercase;
+}
+
+input[type="date"] {
+  padding: 0.35rem;
+}
+
+input[type="checkbox"] {
+  cursor: pointer;
+}
+
+::placeholder {
+  color: rgb(192, 192, 192);
+}

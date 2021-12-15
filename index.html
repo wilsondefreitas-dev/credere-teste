@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style/style.css">
+    <script src="./script/lib/Inputmask-5.x/dist/inputmask.js"></script>
+    <link rel="icon" type="image/x-icon" href="./style/img/favicon.ico">
+    <title>Credere - Formulário</title>
+</head>
+
+<body>
+    
+    <div id="root_container">
+        
+        <div id="header">
+
+            <img src="../style/img/logo.png" alt="logo"/>
+
+        </div>
+
+        <div id="main_column">
+
+            <h1 id="main_title">
+                Registro de Cliente
+            </h1>
+
+            <div class="main_divider"></div>
+
+            <form id="form">
+
+                <h2 class="sub_title">
+                    Dados
+                </h2>
+
+                <div 
+                    class="custon_input" 
+                    label="Nome<span>*</span>"
+
+                    id="name"
+                    type="text"
+                    required="true"
+                ></div>
+
+                <div 
+                    class="custon_input" 
+                    label="Data de Nascimento<span>*</span>"
+
+                    id="birthday"
+                    type="date"
+                    required="true"
+                ></div>
+
+                <div 
+                    class="custon_input" 
+                    label="Carteira de Motorista<span>*</span> <i>/ Número e data de emissão</i>"
+                    
+                    id="driver_license"
+                    type="text"
+                    data-inputmask="'mask': '999999999'"
+
+                    id2="issued_at"
+                    type2="date"
+
+                    hide="true"
+                ></div>
+
+                <div 
+                    class="custon_input" 
+                    label="Estado<span>*</span>"
+
+                    id="state"
+                    type="select"
+                    required="true"
+                    options='Selecionar...,AC - Acre,AL - Alagoas,AP - Amapá,AM - Amazonas,BA - Bahia,CE - Ceará,DF - Distrito Federal,ES - Espírito Santo,GO - Goías,MA - Maranhão,MT - Mato Grosso,MS - Mato Grosso do Sul,MG - Minas Gerais,PA - Pará,PB - Paraíba,PR - Paraná,PE - Pernambuco,PI - Piauí,RJ - Rio de Janeiro,RN - Rio Grande do Norte,RS - Rio Grande do Sul,RO - Rondônia,RR - Roraíma,SC - Santa Catarina,SP - São Paulo,SE - Sergipe,TO - Tocantins'
+                ></div>
+
+                <div 
+                    class="custon_input" 
+                    label="Cidade<span>*</span>"
+
+                    id="city"
+                    type="text"
+
+                    hide="true"
+                ></div>
+
+                <h2 class="sub_title">
+                    Contato
+                </h2>
+
+                <div 
+                    class="custon_input" 
+                    label="Telefones<span>*</span>"
+
+                    id="phone"
+                    type="text"
+                    required="true"
+                    data-inputmask="'mask': '(99) 99999-9999'"
+
+                    id2="main"
+                    type2="radio"
+                    title2="Principal"
+
+                    deleteButtton="true"
+                    addNew="true"
+
+                    multiply="4"
+                ></div>
+
+                <div 
+                    class="custon_input" 
+                    label="E-mails<span>*</span>"
+
+                    id="email"
+                    type="text"
+                    required="true"
+
+                    deleteButtton="true"
+                    addNew="true"
+
+                    multiply="3"
+                ></div>
+
+                <div 
+                    class="custon_input" 
+                    label="Nome do Responsavel<span>*</span>"
+
+                    id="responsible_name"
+                    type="text"
+
+                    hide="true"
+                ></div>
+
+                <div 
+                    class="custon_input" 
+                    label="Telefone do Responsavel<span>*</span>"
+
+                    id="responsible_phone"
+                    type="text"
+                    data-inputmask="'mask': '(99) 99999-9999'"
+
+                    hide="true"
+                ></div>
+
+                <h2 class="sub_title"></h2>
+    
+            </form>
+
+            <div class="input_container">
+
+                <button id="submitButton">
+                    Salvar Cliente
+                </button>
+
+            </div>
+
+        </div>
+
+        <div id="footer">
+
+            <span>
+                /by.<a href="https://github.com/wilsondefreitas-dev" target="_blank">wilsondef</a>
+            </span>
+
+        </div>
+
+    </div>
+
+    
+    <script src="./script/index.js"></script>
+
+</body>
+</html>
