@@ -1,5 +1,7 @@
 (() => {
 
+    let formData = {};
+
     window.onload = () => {
 
         writeForm();
@@ -26,9 +28,11 @@
 
                 if (dateIsComplete) {
 
-                    const license = document.querySelector("#input_license");
-                    const responsible_name = document.querySelector("#input_responsible_name");
-                    const responsible_phone = document.querySelector("#input_responsible_phone");
+                    const license = document.querySelector("#container_driver_license");
+                    const responsible_name = document.querySelector("#container_responsible_name");
+                    const responsible_phone = document.querySelector("#container_responsible_phone");
+
+                    console.log(license);
 
                     license.style.display = ageIsMoreThan18(event.target.value) ? 'block' : 'none';
 
@@ -50,6 +54,8 @@
             default: break;
 
         }
+
+        setValue();
 
     }
 
@@ -130,6 +136,38 @@
 
     }
 
+    const setValue = () => {
+
+        var elements = document.getElementById("form").elements;
+        var obj = {};
+
+        for (let i = 0; i < elements.length; i++) {
+
+            const item = elements.item(i);
+            const isRadio = (item.getAttribute('type') === 'radio');
+
+            obj[item.id] = isRadio ? item.checked : item.value;
+
+        }
+
+        formData = JSON.stringify(obj);
+
+    }
+
+    const submitData = () => {
+
+        try {
+
+            console.log(JSON.parse(formData));
+
+        } catch {
+
+            throw new Error('Nenhum dado inserido');
+
+        }
+
+    }
+
     const writeForm = () => {
 
         document.querySelectorAll(".custon_input").forEach(element => {
@@ -162,8 +200,12 @@
 
                     ${(type[0] === 'select') ? `
 
-                        <select id="input_${id[0] + ((isNotTheFirst) ? i : '')}">
+                        <select 
+                            ${required[0] && 'required'} 
+                            id="input_${id[0] + ((isNotTheFirst) ? i : '')}">
+
                             ${options[0].map(state => `<option value="${state}">${state}</option>`)}
+
                         </select>` :
 
                         `<input 
@@ -231,6 +273,8 @@
             </div>`;
 
             element.onkeyup = element.onchange = (event) => onChangeHandle(event);
+
+            document.querySelector('#submitButton').onclick = submitData;
 
         });
 

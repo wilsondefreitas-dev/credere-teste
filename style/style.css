@@ -152,7 +152,7 @@ body {
   font-size: 15px;
 }
 
-button[type="submit"] {
+#submitButton {
   border-radius: 21px;
   line-height: 42px;
   padding: 0.25rem;
